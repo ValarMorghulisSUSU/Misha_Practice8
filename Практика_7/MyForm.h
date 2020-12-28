@@ -92,6 +92,8 @@ namespace WindowsForm {
 		void InitializeComponent(void)
 		{
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
+			this->Column1 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Column2 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->button1 = (gcnew System::Windows::Forms::Button());
@@ -114,8 +116,6 @@ namespace WindowsForm {
 			this->radioButton2 = (gcnew System::Windows::Forms::RadioButton());
 			this->groupBox4 = (gcnew System::Windows::Forms::GroupBox());
 			this->groupBox5 = (gcnew System::Windows::Forms::GroupBox());
-			this->Column1 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->Column2 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->groupBox1->SuspendLayout();
 			this->groupBox3->SuspendLayout();
@@ -139,6 +139,21 @@ namespace WindowsForm {
 			this->dataGridView1->RowTemplate->Height = 28;
 			this->dataGridView1->Size = System::Drawing::Size(519, 512);
 			this->dataGridView1->TabIndex = 0;
+			// 
+			// Column1
+			// 
+			this->Column1->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->Column1->HeaderText = L"Слово";
+			this->Column1->Name = L"Column1";
+			this->Column1->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->Column1->Width = 63;
+			// 
+			// Column2
+			// 
+			this->Column2->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->Column2->HeaderText = L"Синонимы";
+			this->Column2->Name = L"Column2";
+			this->Column2->Width = 85;
 			// 
 			// groupBox1
 			// 
@@ -194,9 +209,9 @@ namespace WindowsForm {
 			this->label3->AutoSize = true;
 			this->label3->Location = System::Drawing::Point(6, 46);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(66, 17);
+			this->label3->Size = System::Drawing::Size(72, 17);
 			this->label3->TabIndex = 9;
-			this->label3->Text = L"Значение";
+			this->label3->Text = L"Синонимы";
 			// 
 			// label4
 			// 
@@ -264,9 +279,9 @@ namespace WindowsForm {
 			this->label2->AutoSize = true;
 			this->label2->Location = System::Drawing::Point(6, 43);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(66, 17);
+			this->label2->Size = System::Drawing::Size(72, 17);
 			this->label2->TabIndex = 9;
-			this->label2->Text = L"Значение";
+			this->label2->Text = L"Синонимы";
 			// 
 			// label1
 			// 
@@ -380,21 +395,6 @@ namespace WindowsForm {
 			this->groupBox5->TabStop = false;
 			this->groupBox5->Text = L"Поиск по слову";
 			// 
-			// Column1
-			// 
-			this->Column1->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
-			this->Column1->HeaderText = L"Слово";
-			this->Column1->Name = L"Column1";
-			this->Column1->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->Column1->Width = 63;
-			// 
-			// Column2
-			// 
-			this->Column2->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
-			this->Column2->HeaderText = L"Синонимы";
-			this->Column2->Name = L"Column2";
-			this->Column2->Width = 85;
-			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -458,7 +458,16 @@ namespace WindowsForm {
 	}
 
 	private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
-		dictionary->Add(keyTextBox->Text->ToLower(), valueTextBox->Text->ToLower());
+		int index = 0;
+		while (index < dictionary->Count) {
+			if (dataGridView1[0, index]->Value->ToString() == keyTextBox->Text->ToLower()) {
+				dictionary[keyTextBox->Text->ToLower()] += ", " + valueTextBox->Text->ToLower();
+				break;
+			}
+			index++;
+		}
+		if (index == dictionary->Count)
+			dictionary->Add(keyTextBox->Text->ToLower(), valueTextBox->Text->ToLower());
 		dataDraw();
 	}
 
